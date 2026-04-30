@@ -1,0 +1,26 @@
+{
+  // Tailwind CSS IntelliSense — konfigurasi untuk Tailwind v4
+  "tailwindCSS.experimental.configFile": {
+    "src/app/globals.css": "**"
+  },
+
+  // Aktifkan autocomplete CSS variable di dalam file .css, .tsx, .jsx
+  "tailwindCSS.includeLanguages": {
+    "typescriptreact": "html",
+    "javascriptreact": "html",
+    "css": "css"
+  },
+
+  // Matikan validasi CSS bawaan VS Code di file yang pakai Tailwind
+  // (supaya @theme, @layer, @apply tidak dianggap error)
+  "css.validate": false,
+  "scss.validate": false,
+
+  // Aktifkan color preview di editor
+  "editor.colorDecorators": true,
+
+  // Trigger autocomplete saat mengetik "--" untuk CSS variables
+  "editor.quickSuggestions": {
+    "strings": true
+  }
+}

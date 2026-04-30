@@ -1,0 +1,92 @@
+:root {
+    /* Background */
+    --color-bg-strong: var(--color-neutral-950);
+    --color-bg-surface: var(--color-neutral-800);
+    --color-bg-sub: var(--color-neutral-300);
+    --color-bg-soft: var(--color-neutral-200);
+    --color-bg-weak: var(--color-neutral-100);
+    --color-bg-white: var(--color-neutral-50);
+
+    /* Text */
+    --color-text-strong: var(--color-neutral-950);
+    --color-text-sub: var(--color-neutral-500);
+    --color-text-soft: var(--color-neutral-300);
+    --color-text-disabled: var(--color-neutral-200);
+    --color-text-white: var(--color-neutral-50);
+
+    /* Icon */
+    --color-icon-strong: var(--color-neutral-950);
+    --color-icon-sub: var(--color-neutral-500);
+    --color-icon-soft: var(--color-neutral-300);
+    --color-icon-disabled: var(--color-neutral-200);
+    --color-icon-white: var(--color-neutral-50);
+
+    /* Stroke */
+    --color-stroke-strong: var(--color-neutral-800);
+    --color-stroke-sub: var(--color-neutral-200);
+    --color-stroke-soft: var(--color-neutral-100);
+    --color-stroke-white: var(--color-neutral-50);
+
+    /* State - Faded */
+    --color-state-faded-lighter: var(--color-neutral-100);
+    --color-state-faded-light: var(--color-neutral-200);
+    --color-state-faded-base: var(--color-neutral-400);
+    --color-state-faded-dark: var(--color-neutral-700);
+    --color-state-faded-darker: var(--color-neutral-900);
+
+    /* State - Information */
+    --color-state-information-lighter: var(--color-blue-50);
+    --color-state-information-light: var(--color-blue-200);
+    --color-state-information-base: var(--color-blue-base);
+    --color-state-information-dark: var(--color-blue-800);
+    --color-state-information-darker: var(--color-blue-950);
+
+    /* State - Warning */
+    --color-state-warning-lighter: var(--color-yellow-50);
+    --color-state-warning-light: var(--color-yellow-200);
+    --color-state-warning-base: var(--color-yellow-base);
+    --color-state-warning-dark: var(--color-yellow-800);
+    --color-state-warning-darker: var(--color-yellow-950);
+
+    /* State - Error */
+    --color-state-error-lighter: var(--color-red-50);
+    --color-state-error-light: var(--color-red-200);
+    --color-state-error-base: var(--color-red-base);
+    --color-state-error-dark: var(--color-red-800);
+    --color-state-error-darker: var(--color-red-950);
+
+    /* State - Success */
+    --color-state-success-lighter: var(--color-green-50);
+    --color-state-success-light: var(--color-green-200);
+    --color-state-success-base: var(--color-green-base);
+    --color-state-success-dark: var(--color-green-800);
+    --color-state-success-darker: var(--color-green-950);
+
+    /* State - Feature */
+    --color-state-feature-lighter: var(--color-purple-50);
+    --color-state-feature-light: var(--color-purple-200);
+    --color-state-feature-base: var(--color-purple-500);
+    --color-state-feature-dark: var(--color-purple-800);
+    --color-state-feature-darker: var(--color-purple-950);
+
+    /* State - Verified */
+    --color-state-verified-lighter: var(--color-teal-50);
+    --color-state-verified-light: var(--color-teal-200);
+    --color-state-verified-base: var(--color-teal-500);
+    --color-state-verified-dark: var(--color-teal-800);
+    --color-state-verified-darker: var(--color-teal-950);
+
+    /* State - Highlighted */
+    --color-state-highlighted-lighter: var(--color-orange-50);
+    --color-state-highlighted-light: var(--color-orange-200);
+    --color-state-highlighted-base: var(--color-orange-base);
+    --color-state-highlighted-dark: var(--color-orange-800);
+    --color-state-highlighted-darker: var(--color-orange-950);
+
+    /* State - Stable */
+    --color-state-stable-lighter: var(--color-pink-50);
+    --color-state-stable-light: var(--color-pink-200);
+    --color-state-stable-base: var(--color-pink-base);
+    --color-state-stable-dark: var(--color-pink-800);
+    --color-state-stable-darker: var(--color-pink-950);
+}

@@ -1,0 +1,102 @@
+/* typography.css — Font variables & @font-face */
+/*
+ * Google Fonts (Nunito) di-import di globals.css bukan di sini,
+ * karena @import harus berada di paling atas file entry point.
+ *
+ * ⚠️  Font Catfiles: letakkan file di public/fonts/Catfiles.woff2
+ */
+@font-face {
+    font-family: 'Catfiles';
+    src: url('/fonts/Catfiles.woff2') format('woff2'),
+        url('/fonts/Catfiles.woff') format('woff'),
+        url('/fonts/Catfiles.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    /* Font Family */
+    /* --font-nunito di-inject oleh next/font/google via layout.tsx */
+    --font-display: 'Catfiles', sans-serif;
+    --font-heading: var(--font-nunito, 'Nunito'), sans-serif;
+    --font-body: var(--font-nunito, 'Nunito'), sans-serif;
+    --font-label: var(--font-nunito, 'Nunito'), sans-serif;
+
+    /* Font Weights[cite: 3] */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Display (112px)[cite: 3] */
+    --font-size-display-112: 7rem;
+    --line-height-display-112: 7.7rem;
+
+    /* Heading Font Sizes[cite: 3] */
+    --font-size-heading-80: 5rem;
+    --font-size-heading-72: 4.5rem;
+    --font-size-heading-64: 4rem;
+    --font-size-heading-56: 3.5rem;
+    --font-size-heading-52: 3.25rem;
+    --font-size-heading-48: 3rem;
+    --font-size-heading-44: 2.75rem;
+    --font-size-heading-40: 2.5rem;
+    --font-size-heading-38: 2.375rem;
+    --font-size-heading-36: 2.25rem;
+    --font-size-heading-32: 2rem;
+    --font-size-heading-28: 1.75rem;
+    --font-size-heading-24: 1.5rem;
+    --font-size-heading-20: 1.25rem;
+
+    /* Heading Line Heights */
+    --line-height-heading-80: 96px;
+    --line-height-heading-72: 86.4px;
+    --line-height-heading-64: 76.8px;
+    --line-height-heading-56: 67.2px;
+    --line-height-heading-52: 62.4px;
+    --line-height-heading-48: 57.6px;
+    --line-height-heading-44: 52.8px;
+    --line-height-heading-40: 48px;
+    --line-height-heading-38: 45.6px;
+    --line-height-heading-36: 43.2px;
+    --line-height-heading-32: 38.4px;
+    --line-height-heading-28: 33.6px;
+    --line-height-heading-24: 28.8px;
+    --line-height-heading-20: 24px;
+
+    /* Body Font Sizes[cite: 3] */
+    --font-size-body-26: 1.625rem;
+    --font-size-body-24: 1.5rem;
+    --font-size-body-22: 1.375rem;
+    --font-size-body-20: 1.25rem;
+    --font-size-body-18: 1.125rem;
+    --font-size-body-16: 1rem;
+    --font-size-body-14: 0.875rem;
+    --font-size-body-12: 0.75rem;
+
+    /* Body Line Heights */
+    --line-height-body-26: 36.4px;
+    --line-height-body-24: 33.6px;
+    --line-height-body-22: 30.8px;
+    --line-height-body-20: 28px;
+    --line-height-body-18: 25.2px;
+    --line-height-body-16: 22.4px;
+    --line-height-body-14: 19.6px;
+    --line-height-body-12: 16.8px;
+
+    /* Label Font Sizes[cite: 3] */
+    --font-size-label-12: 0.75rem;
+    --font-size-label-11: 0.6875rem;
+    --font-size-label-10: 0.625rem;
+
+    /* Label Line Heights */
+    --line-height-label-12: 16.8px;
+    --line-height-label-11: 15.4px;
+    --line-height-label-10: 14px;
+
+    /* Label Letter Spacing */
+    --letter-spacing-label-12: 0.12px;
+    --letter-spacing-label-11: 0.11px;
+    --letter-spacing-label-10: 0.1px;
+}
