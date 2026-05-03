@@ -128,4 +128,21 @@
     --color-purple-800: #751DBA;
     --color-purple-900: #611A98;
     --color-purple-950: #3C0E67;
+
+    /* ── Effects: Standard Drop Shadows ── */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    /* ── Effects: 3D Button Shadows ── */
+    --shadow-button-primary: 0px 4px 0px var(--color-purple-600);
+    --shadow-button-secondary: 0px 4px 0px var(--color-blue-600);
+    --shadow-button-confirm: 0px 4px 0px var(--color-green-600);
+    --shadow-button-error: 0px 4px 0px var(--color-red-600);
+    --shadow-button-warning: 0px 4px 0px var(--color-yellow-600);
+    --shadow-button-neutral: 0px 4px 0px var(--color-neutral-300);
+
+    /* ── Effects: Text Shadows ── */
+    --shadow-button-label: 0px 2px 0px rgba(0, 0, 0, 0.15);
 }

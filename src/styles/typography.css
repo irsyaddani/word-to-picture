@@ -28,9 +28,17 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
 
     /* Display (112px)[cite: 3] */
-    --font-size-display-112: 7rem;
+    --font-size-display-48: 3rem;
+    --font-size-display-40: 2.5rem;
+    --font-size-display-32: 2rem;
+    --font-size-display-28: 1.75rem;
+    --font-size-display-24: 1.5rem;
+    --font-size-display-20: 1.25rem;
+
+    /* Heading Line Heights */
     --line-height-display-112: 7.7rem;
 
     /* Heading Font Sizes[cite: 3] */
