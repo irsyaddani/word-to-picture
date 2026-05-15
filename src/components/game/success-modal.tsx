@@ -6,6 +6,7 @@ import { LogoutIcon, PlayIcon, ReplayIcon } from "@/components/game/game-icons";
 
 type SuccessModalProps = {
   levelTitle: string;
+  stars: number;
   chooseLevelHref: string;
   nextLevelHref?: string;
   onReplay: () => void;
@@ -13,6 +14,7 @@ type SuccessModalProps = {
 
 export function SuccessModal({
   levelTitle,
+  stars,
   chooseLevelHref,
   nextLevelHref,
   onReplay,
@@ -32,15 +34,15 @@ export function SuccessModal({
           {levelTitle}
         </div>
 
-        <div className="flex justify-center items-end gap-3 mt-2 h-[65px]">
+        <div className="flex justify-center items-end gap-3 mt-2 h-16.25">
           <div className="animate-[countdownPop_0.5s_cubic-bezier(0.34,1.56,0.64,1)_0.4s_both]">
-            <Star active size={42} className="-rotate-[15deg] translate-y-2" />
+            <Star active={stars >= 1} size={42} className="rotate-[-15deg] translate-y-2" />
           </div>
           <div className="animate-[countdownPop_0.5s_cubic-bezier(0.34,1.56,0.64,1)_0.6s_both]">
-            <Star active size={56} className="translate-y-1" />
+            <Star active={stars >= 2} size={56} className="translate-y-1" />
           </div>
           <div className="animate-[countdownPop_0.5s_cubic-bezier(0.34,1.56,0.64,1)_0.8s_both]">
-            <Star active size={42} className="rotate-[15deg] translate-y-2" />
+            <Star active={stars >= 3} size={42} className="rotate-15 translate-y-2" />
           </div>
         </div>
 

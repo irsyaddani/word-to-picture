@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { GameBackground } from "@/components/ui/background";
-import { ProgressBar } from "@/components/ui/progress-bar";
 
 function AwardIcon() {
   return (
@@ -53,12 +52,12 @@ export default function Home() {
   return (
     <GameBackground>
       <main className="flex min-h-screen w-full items-center justify-center px-6 py-16 text-center sm:px-10 lg:px-20">
-        <section className="flex w-full max-w-[640px] flex-col items-center gap-10 sm:gap-[60px]">
+        <section className="flex w-full max-w-160 flex-col items-center gap-10 sm:gap-15">
           <div className="flex flex-col items-center gap-4 [text-shadow:0px_2px_12px_rgba(15,15,15,0.1)]">
             <h1 className="text-display1 text-stroke-4 text-stroke-white text-state-feature-darker sm:text-display1">
               WORD TO PICTURE
             </h1>
-            <p className="text-b3-extrabold max-w-[381px] text-text-strong sm:text-b2-extrabold">
+            <p className="text-b3-extrabold max-w-95.25 text-text-strong sm:text-b2-extrabold">
               Tarik kata, pasangkan gambar, dan kumpulkan lencananya!
             </p>
           </div>

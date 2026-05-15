@@ -91,9 +91,9 @@ export default async function HowToPlayPage({
   }
 
   return (
-    <GameBackground className="bg-[var(--color-parchment-100)]">
+    <GameBackground className="bg-parchment-100">
       <main className="flex min-h-screen flex-col">
-        <header className="grid min-h-[100px] grid-cols-[auto_1fr] items-center gap-4 bg-white/20 px-5 py-4 sm:grid-cols-[234px_1fr_234px] sm:px-6">
+        <header className="grid min-h-25 grid-cols-[auto_1fr] items-center gap-4 bg-white/20 px-5 py-4 sm:grid-cols-[234px_1fr_234px] sm:px-6">
           <div className="flex items-center gap-3">
             <Button asChild variant="neutral" size="lg" iconOnly>
               <Link href="/choose-game" aria-label="Kembali ke pilih permainan">
@@ -118,8 +118,8 @@ export default async function HowToPlayPage({
         </header>
 
         <section className="flex flex-1 items-start justify-center px-5 py-9 sm:px-10 lg:px-20">
-          <div className="flex w-full max-w-[570px] flex-col items-end gap-10">
-            <div className="w-full rounded-[36px] bg-[var(--color-parchment-50)] p-6 shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_0px_var(--color-parchment-base)] sm:p-8">
+          <div className="flex w-full max-w-142.5 flex-col items-end gap-10">
+            <div className="w-full rounded-[36px] bg-parchment-50 p-6 shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_0px_var(--color-parchment-base)] sm:p-8">
               <ol className="list-decimal space-y-3 pl-6 text-b2-semibold text-text-strong sm:text-b1-semibold">
                 {game.howToPlay.instructions.map((instruction) => (
                   <li key={instruction} className="pl-1">

@@ -38,6 +38,7 @@ export default async function GameStartPage({
   return (
     <GameStartClient
       key={`${game.id}-${gameLevel.level}`}
+      gameId={game.id}
       level={gameLevel}
       chooseLevelHref={game.howToPlay.chooseLevelHref}
       nextLevelHref={nextLevel?.href}

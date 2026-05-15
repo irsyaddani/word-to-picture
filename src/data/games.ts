@@ -1,103 +1,160 @@
-import type { GameLevel, GameOption } from "@/types/game";
+import type { GameLevel, GameLevelRound, GameOption } from "@/types/game";
 
-const defaultHowToPlayInstructions = [
-  "Lihat gambar jam yang ada di layar.",
-  "Pilih kotak kata yang tepat di bagian bawah.",
-  "Tarik dan Lepaskan kata tersebut ke gambar jam yang benar.",
-  "Selesaikan sebelum waktunya habis, ya!",
-];
+const howToPlayInstructions = {
+  whatTimeIsIt: [
+    "Lihat gambar jam yang ada di layar.",
+    "Pilih kotak kata yang tepat di bagian bawah.",
+    "Tarik dan lepaskan kata tersebut ke area jawaban.",
+    "Selesaikan sebelum waktunya habis, ya!",
+  ],
+  vroomLetsRide: [
+    "Lihat gambar alat transportasi yang muncul di layar.",
+    "Cari nama kendaraan yang sesuai di bagian bawah.",
+    "Tarik dan lepaskan kata tersebut ke area jawaban.",
+    "Selesaikan sebelum waktunya habis, ya!",
+  ],
+  splishSplashBath: [
+    "Lihat gambar benda kamar mandi yang muncul di layar.",
+    "Cari nama benda yang sesuai di bagian bawah.",
+    "Tarik dan lepaskan kata tersebut ke area jawaban.",
+    "Selesaikan sebelum waktunya habis, ya!",
+  ],
+  myCozyLivingRoom: [
+    "Lihat gambar benda di ruang keluarga yang muncul di layar.",
+    "Cari nama benda yang sesuai di bagian bawah.",
+    "Tarik dan lepaskan kata tersebut ke area jawaban.",
+    "Selesaikan sebelum waktunya habis, ya!",
+  ],
+  myAwesomeClass: [
+    "Lihat gambar benda di kelasmu yang muncul di layar.",
+    "Cari nama benda yang sesuai di bagian bawah.",
+    "Tarik dan lepaskan kata tersebut ke area jawaban.",
+    "Selesaikan sebelum waktunya habis, ya!",
+  ],
+};
+
+type RoundSeed = {
+  correctAnswer: string;
+  distractors: string[];
+};
+
+const roundSeedsByGameId: Record<string, Record<1 | 2, RoundSeed[]>> = {
+  "what-time-is-it": {
+    1: [
+      { correctAnswer: "06:00 o'clock", distractors: ["six thirty", "seven o'clock"] },
+      { correctAnswer: "09:30 o'clock", distractors: ["nine o'clock", "half past eight"] },
+      { correctAnswer: "11:00 o'clock", distractors: ["twelve o'clock", "half past eleven"] },
+      { correctAnswer: "06:45 o'clock", distractors: ["quarter to six", "six o'clock"] },
+      { correctAnswer: "07:00 o'clock", distractors: ["seven thirty", "eight o'clock"] },
+    ],
+    2: [
+      { correctAnswer: "Half past seven", distractors: ["seven o'clock", "half past eight", "six thirty"] },
+      { correctAnswer: "Half past one", distractors: ["one o'clock", "half past two", "two thirty"] },
+      { correctAnswer: "Quarter past eight", distractors: ["eight o'clock", "quarter to eight", "nine fifteen"] },
+      { correctAnswer: "Half past five", distractors: ["five o'clock", "half past four", "five fifteen"] },
+      { correctAnswer: "Quarter to ten", distractors: ["ten o'clock", "quarter past ten", "nine forty-five"] },
+    ],
+  },
+  "vroom-lets-ride": {
+    1: [
+      { correctAnswer: "Pedicab", distractors: ["bicycle", "rickshaw"] },
+      { correctAnswer: "Truck", distractors: ["van", "bus"] },
+      { correctAnswer: "Helicopter", distractors: ["airplane", "drone"] },
+      { correctAnswer: "Train", distractors: ["tram", "subway"] },
+      { correctAnswer: "Motorcycle", distractors: ["scooter", "moped"] },
+    ],
+    2: [
+      { correctAnswer: "Rowboat", distractors: ["canoe", "ferry", "sailboat"] },
+      { correctAnswer: "Ferry", distractors: ["ship", "boat", "tugboat"] },
+      { correctAnswer: "Airplane", distractors: ["jet", "helicopter", "glider"] },
+      { correctAnswer: "School Bus", distractors: ["minibus", "van", "truck"] },
+      { correctAnswer: "Sailboat", distractors: ["rowboat", "ship", "ferry"] },
+    ],
+  },
+  "splish-splash-bath": {
+    1: [
+      { correctAnswer: "Toothbrush", distractors: ["hairbrush", "comb"] },
+      { correctAnswer: "Mirror", distractors: ["glass", "window"] },
+      { correctAnswer: "Toothpaste", distractors: ["soap", "shampoo"] },
+      { correctAnswer: "Towel", distractors: ["washcloth", "napkin"] },
+      { correctAnswer: "Shower", distractors: ["faucet", "tap"] },
+    ],
+    2: [
+      { correctAnswer: "Dipper", distractors: ["bucket", "basin", "comb"] },
+      { correctAnswer: "Bucket", distractors: ["dipper", "tub", "basin"] },
+      { correctAnswer: "Comb", distractors: ["brush", "pin", "hairband"] },
+      { correctAnswer: "Bathtub", distractors: ["sink", "bucket", "basin"] },
+      { correctAnswer: "Bar Soap", distractors: ["liquid soap", "shampoo", "lotion", "detergent"] },
+    ],
+  },
+  "my-cozy-living-room": {
+    1: [
+      { correctAnswer: "Vase", distractors: ["pot", "jar"] },
+      { correctAnswer: "Wall Clock", distractors: ["alarm clock", "watch"] },
+      { correctAnswer: "Floor Lamp", distractors: ["ceiling light", "table lamp"] },
+      { correctAnswer: "Picture Frame", distractors: ["painting", "poster"] },
+      { correctAnswer: "Remote Control", distractors: ["controller", "switch"] },
+    ],
+    2: [
+      { correctAnswer: "Rug", distractors: ["carpet", "mat", "blanket"] },
+      { correctAnswer: "Bolster", distractors: ["pillow", "cushion", "pad"] },
+      { correctAnswer: "Bookshelf", distractors: ["cupboard", "cabinet", "shelf"] },
+      { correctAnswer: "Cupboard", distractors: ["wardrobe", "cabinet", "shelf"] },
+      { correctAnswer: "Curtain", distractors: ["blind", "drape", "screen"] },
+    ],
+  },
+  "my-awesome-class": {
+    1: [
+      { correctAnswer: "Ruler", distractors: ["stick", "pencil"] },
+      { correctAnswer: "Pencil Sharpener", distractors: ["eraser", "cutter"] },
+      { correctAnswer: "Glue Stick", distractors: ["tape", "stapler"] },
+      { correctAnswer: "Eraser", distractors: ["rubber", "cleaner"] },
+      { correctAnswer: "Scissors", distractors: ["cutter", "knife"] },
+    ],
+    2: [
+      { correctAnswer: "Whiteboard", distractors: ["blackboard", "chalkboard", "board", "paper"] },
+      { correctAnswer: "Stapler", distractors: ["punch", "clip", "tape"] },
+      { correctAnswer: "Paper Clip", distractors: ["staple", "pin", "binder"] },
+      { correctAnswer: "Globe", distractors: ["map", "sphere", "atlas"] },
+      { correctAnswer: "Pencil Case", distractors: ["pouch", "bag", "box"] },
+    ],
+  },
+};
+
+function createRound(gameId: string, level: 1 | 2, roundNumber: number, seed: RoundSeed): GameLevelRound {
+  const correctAnswerId = `${gameId}-level-${level}-round-${roundNumber}-answer-1`;
+
+  return {
+    id: `${gameId}-level-${level}-round-${roundNumber}`,
+    promptImageSrc: "/card-game-thumb.png",
+    promptImageAlt: `Gambar ${seed.correctAnswer}`,
+    correctAnswerId,
+    answers: [seed.correctAnswer, ...seed.distractors].map((label, answerIndex) => ({
+      id: `${gameId}-level-${level}-round-${roundNumber}-answer-${answerIndex + 1}`,
+      label,
+    })),
+  };
+}
+
+function createLevel(gameId: string, level: 1 | 2): GameLevel {
+  const rounds = roundSeedsByGameId[gameId][level].map((seed, index) => (
+    createRound(gameId, level, index + 1, seed)
+  ));
+
+  return {
+    level,
+    title: `Level ${level}`,
+    href: `/game-start/${gameId}/${level}`,
+    active: true,
+    stars: 0,
+    totalRounds: rounds.length,
+    durationSeconds: level === 1 ? 120 : 55,
+    rounds,
+  };
+}
 
 function createLevels(gameId: string): GameLevel[] {
-  return [
-    {
-      level: 1,
-      title: "Level 1",
-      href: `/game-start/${gameId}/1`,
-      active: true,
-      stars: 0,
-      totalRounds: 5,
-      durationSeconds: 120,
-      rounds: [
-        {
-          id: `${gameId}-level-1-round-1`,
-          promptImageSrc: "/card-game-thumb.png",
-          promptImageAlt: "Gambar bus sekolah",
-          correctAnswerId: "answer-1",
-          answers: [
-            { id: "answer-1", label: "School Bus" },
-            { id: "answer-2", label: "Bicycle" },
-            { id: "answer-3", label: "Airplane" },
-          ],
-        },
-        {
-          id: `${gameId}-level-1-round-2`,
-          promptImageSrc: "/card-game-thumb.png",
-          promptImageAlt: "Gambar soal 2",
-          correctAnswerId: "answer-4",
-          answers: [
-            { id: "answer-4", label: "Train" },
-            { id: "answer-5", label: "Boat" },
-            { id: "answer-6", label: "Car" },
-          ],
-        },
-        {
-          id: `${gameId}-level-1-round-3`,
-          promptImageSrc: "/card-game-thumb.png",
-          promptImageAlt: "Gambar soal 3",
-          correctAnswerId: "answer-7",
-          answers: [
-            { id: "answer-7", label: "Helicopter" },
-            { id: "answer-8", label: "Truck" },
-            { id: "answer-9", label: "Scooter" },
-          ],
-        },
-        {
-          id: `${gameId}-level-1-round-4`,
-          promptImageSrc: "/card-game-thumb.png",
-          promptImageAlt: "Gambar soal 4",
-          correctAnswerId: "answer-10",
-          answers: [
-            { id: "answer-10", label: "Motorcycle" },
-            { id: "answer-11", label: "Ship" },
-            { id: "answer-12", label: "Rocket" },
-          ],
-        },
-        {
-          id: `${gameId}-level-1-round-5`,
-          promptImageSrc: "/card-game-thumb.png",
-          promptImageAlt: "Gambar soal 5",
-          correctAnswerId: "answer-13",
-          answers: [
-            { id: "answer-13", label: "Ambulance" },
-            { id: "answer-14", label: "Taxi" },
-            { id: "answer-15", label: "Tram" },
-          ],
-        },
-      ],
-    },
-    {
-      level: 2,
-      title: "Level 2",
-      href: `/game-start/${gameId}/2`,
-      active: false,
-      stars: 0,
-      unlockMessage: "Reach level 1 to unlock",
-      totalRounds: 5,
-      durationSeconds: 55,
-      rounds: [],
-    },
-    {
-      level: 3,
-      title: "Level 3",
-      href: `/game-start/${gameId}/3`,
-      active: false,
-      stars: 0,
-      unlockMessage: "Reach level 2 to unlock",
-      totalRounds: 5,
-      durationSeconds: 55,
-      rounds: [],
-    },
-  ];
+  return [createLevel(gameId, 1), createLevel(gameId, 2)];
 }
 
 export const games: GameOption[] = [
@@ -107,7 +164,7 @@ export const games: GameOption[] = [
     description: "Tebak jam berapa sekarang!",
     imageSrc: "/card-game-thumb.png",
     howToPlay: {
-      instructions: defaultHowToPlayInstructions,
+      instructions: howToPlayInstructions.whatTimeIsIt,
       chooseLevelHref: "/choose-level/what-time-is-it",
     },
     levels: createLevels("what-time-is-it"),
@@ -118,7 +175,7 @@ export const games: GameOption[] = [
     description: "Kenali alat transportasi di sekitarmu!",
     imageSrc: "/card-game-thumb.png",
     howToPlay: {
-      instructions: defaultHowToPlayInstructions,
+      instructions: howToPlayInstructions.vroomLetsRide,
       chooseLevelHref: "/choose-level/vroom-lets-ride",
     },
     levels: createLevels("vroom-lets-ride"),
@@ -129,7 +186,7 @@ export const games: GameOption[] = [
     description: "Temukan barang di kamar mandi!",
     imageSrc: "/card-game-thumb.png",
     howToPlay: {
-      instructions: defaultHowToPlayInstructions,
+      instructions: howToPlayInstructions.splishSplashBath,
       chooseLevelHref: "/choose-level/splish-splash-bath",
     },
     levels: createLevels("splish-splash-bath"),
@@ -140,7 +197,7 @@ export const games: GameOption[] = [
     description: "Pasangkan benda di ruang keluarga!",
     imageSrc: "/card-game-thumb.png",
     howToPlay: {
-      instructions: defaultHowToPlayInstructions,
+      instructions: howToPlayInstructions.myCozyLivingRoom,
       chooseLevelHref: "/choose-level/my-cozy-living-room",
     },
     levels: createLevels("my-cozy-living-room"),
@@ -151,7 +208,7 @@ export const games: GameOption[] = [
     description: "Tebak nama benda di kelasmu!",
     imageSrc: "/card-game-thumb.png",
     howToPlay: {
-      instructions: defaultHowToPlayInstructions,
+      instructions: howToPlayInstructions.myAwesomeClass,
       chooseLevelHref: "/choose-level/my-awesome-class",
     },
     levels: createLevels("my-awesome-class"),

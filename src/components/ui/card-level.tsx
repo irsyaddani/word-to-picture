@@ -36,19 +36,19 @@ export const CardLevel: React.FC<CardLevelProps> = ({
             onClick={active && !href ? onClick : undefined}
             aria-disabled={active ? undefined : true}
             className={`
-                relative flex flex-col items-center gap-[12px] p-[16px] pb-[28px] rounded-[36px]
+                relative flex flex-col items-center gap-3 p-4 pb- rounded-[36px]
                 transition-all duration-200 w-fit select-none
                 ${active
-                    ? `bg-[var(--color-parchment-50)] ${isInteractive ? "cursor-pointer active:scale-95" : "cursor-default"} shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_1px_var(--color-parchment-base)]`
-                    : "bg-[var(--color-neutral-100)] cursor-not-allowed shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_1px_var(--color-neutral-200)] opacity-90"
+                    ? `bg-parchment-50 ${isInteractive ? "cursor-pointer active:scale-95" : "cursor-default"} shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_1px_var(--color-parchment-base)]`
+                    : "bg-(--color-neutral-100) cursor-not-allowed shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_1px_var(--color-neutral-200)] opacity-90"
                 }
                 ${className}
             `}
         >
             {/* Thumbnail Frame (20309:5200 / 5208) */}
             <div className={`
-                relative w-[220px] h-[240px] rounded-[24px] overflow-hidden flex items-center justify-center
-                ${active ? "bg-[#FDE7D7]" : "bg-[#E1E4EB]"}
+                relative w-55 h-60 rounded-3xl overflow-hidden flex items-center justify-center
+                ${active ? "bg-orange-100" : "bg-[#E1E4EB]"}
             `}>
                 <Image
                     src={active ? "/card-level-active-thumb.png" : "/card-level-inactive-thumb.png"}
@@ -59,7 +59,7 @@ export const CardLevel: React.FC<CardLevelProps> = ({
             </div>
 
             {/* Content Frame (20309:5201 / 5218) */}
-            <div className="flex flex-col items-center gap-[8px] w-full text-center">
+            <div className="flex flex-col items-center gap-2 w-full text-center">
                 <h3 className={`text-h5-extrabold ${active ? "text-text-strong" : "text-text-sub"}`}>
                     Level {level}
                 </h3>

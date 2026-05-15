@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   DndContext,
   DragEndEvent,
@@ -13,7 +14,7 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 
-import type { GameLevel } from "@/types/game";
+import type { GameLevel, GameLevelRound } from "@/types/game";
 import { AnswerCard } from "@/components/ui/answer-card";
 import { GameBackground } from "@/components/ui/background";
 import { Notification } from "@/components/ui/notification";
@@ -22,9 +23,11 @@ import { GameAnswerFooter } from "@/components/game/game-answer-footer";
 import { GameHeader } from "@/components/game/game-header";
 import { GamePromptArea } from "@/components/game/game-prompt-area";
 import { PauseModal } from "@/components/game/pause-modal";
+import { calculateStars, getLevelStars, saveLevelStars } from "@/components/game/progress-storage";
 import { SuccessModal } from "@/components/game/success-modal";
 
 type GameStartClientProps = {
+  gameId: string;
   level: GameLevel;
   chooseLevelHref: string;
   nextLevelHref?: string;
@@ -36,22 +39,41 @@ function formatTimer(totalSeconds: number): string {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
+function shuffleRounds(rounds: GameLevelRound[]): GameLevelRound[] {
+  const shuffledRounds = [...rounds];
+
+  for (let index = shuffledRounds.length - 1; index > 0; index -= 1) {
+    const targetIndex = Math.floor(Math.random() * (index + 1));
+    [shuffledRounds[index], shuffledRounds[targetIndex]] = [
+      shuffledRounds[targetIndex],
+      shuffledRounds[index],
+    ];
+  }
+
+  return shuffledRounds;
+}
+
 export function GameStartClient({
+  gameId,
   level,
   chooseLevelHref,
   nextLevelHref,
 }: GameStartClientProps) {
+  const router = useRouter();
+  const [rounds, setRounds] = useState<GameLevelRound[]>(() => shuffleRounds(level.rounds));
   const [activeAnswerId, setActiveAnswerId] = useState<string | null>(null);
   const [placedAnswerId, setPlacedAnswerId] = useState<string | null>(null);
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(level.durationSeconds);
   const [isPaused, setIsPaused] = useState(false);
   const [notification, setNotification] = useState<"success" | "error" | null>(null);
+  const [wrongAnswerCount, setWrongAnswerCount] = useState(0);
+  const [earnedStars, setEarnedStars] = useState(0);
   const [countdown, setCountdown] = useState<number | null>(3);
   const [countdownRunId, setCountdownRunId] = useState(0);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  const currentRound = level.rounds[currentRoundIndex];
+  const currentRound = rounds[currentRoundIndex];
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -79,9 +101,15 @@ export function GameStartClient({
     (answer) => answer.id !== placedAnswerId,
   );
   const isCorrect = placedAnswer?.id === currentRound.correctAnswerId;
-  const isLastRound = currentRoundIndex === level.rounds.length - 1;
+  const isLastRound = currentRoundIndex === rounds.length - 1;
   const isInteractionDisabled = countdown !== null || isPaused || notification !== null || showSuccessModal;
   const progressValue = isCorrect ? currentRoundIndex + 1 : currentRoundIndex;
+
+  useEffect(() => {
+    if (level.level === 2 && getLevelStars(gameId, 1) < 2) {
+      router.replace(chooseLevelHref);
+    }
+  }, [chooseLevelHref, gameId, level.level, router]);
 
   useEffect(() => {
     if (notification === "error") {
@@ -142,12 +170,15 @@ export function GameStartClient({
   }
 
   function handleReplay() {
+    setRounds(shuffleRounds(level.rounds));
     setCurrentRoundIndex(0);
     setActiveAnswerId(null);
     setPlacedAnswerId(null);
     setTimeLeft(level.durationSeconds);
     setIsPaused(false);
     setNotification(null);
+    setWrongAnswerCount(0);
+    setEarnedStars(0);
     setCountdown(3);
     setCountdownRunId((runId) => runId + 1);
     setShowSuccessModal(false);
@@ -163,17 +194,21 @@ export function GameStartClient({
     if (answerId === currentRound.correctAnswerId) {
       setNotification("success");
       if (isLastRound) {
+        const stars = calculateStars(wrongAnswerCount);
+        const bestStars = saveLevelStars(gameId, level.level, stars);
+        setEarnedStars(bestStars);
         window.setTimeout(() => {
           setShowSuccessModal(true);
         }, 1200);
       }
     } else {
+      setWrongAnswerCount((count) => count + 1);
       setNotification("error");
     }
   }
 
   function handleNextRound() {
-    if (currentRoundIndex < level.rounds.length - 1) {
+    if (currentRoundIndex < rounds.length - 1) {
       setCurrentRoundIndex((prev) => prev + 1);
       setPlacedAnswerId(null);
       setNotification(null);
@@ -300,6 +335,7 @@ export function GameStartClient({
         {showSuccessModal ? (
           <SuccessModal
             levelTitle={level.title}
+            stars={earnedStars}
             chooseLevelHref={chooseLevelHref}
             nextLevelHref={nextLevelHref}
             onReplay={handleReplay}

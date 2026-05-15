@@ -33,17 +33,13 @@ export function GameHeader({
         >
           <PauseIcon />
         </Button>
-
-        {/* <div className="fixed left-2 top-2 z-9999 rounded bg-red-600 px-2 py-1 text-xs font-bold text-white">
-          DEBUG MOBILE BUILD
-        </div> */}
       </div>
 
       <div className="flex h-full flex-col items-center justify-between gap-2 text-center">
         <h1 className="text-h5-extrabold text-state-feature-darker sm:text-h4-regular">
           {title}
         </h1>
-        <div className="flex items-center gap-3 w-full max-w-[220px]">
+        <div className="flex items-center gap-3 w-full max-w-55">
           <ProgressBar
             value={progressValue}
             total={totalRounds}
