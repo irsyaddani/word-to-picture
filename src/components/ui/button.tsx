@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from "react";
+import React, { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactElement } from "react";
 export type ButtonVariant =
     | "primary"   // ungu
     | "secondary" // biru
@@ -18,11 +18,12 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     rightIcon?: React.ReactNode;
     iconOnly?: boolean;
     pressed?: boolean;
+    asChild?: boolean;
     className?: string;
 }
 
 const BASE =
-    "relative inline-flex shrink-0 items-center justify-center overflow-hidden " +
+    "relative inline-flex shrink-0 touch-manipulation items-center justify-center overflow-hidden " +
     "border-2 font-extrabold uppercase " +
     "transition-[transform,box-shadow,filter] duration-100 ease-out " +
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white/70 " +
@@ -164,6 +165,7 @@ export const Button: React.FC<ButtonProps> = ({
     iconOnly = false,
     pressed = false,
     disabled = false,
+    asChild = false,
     className,
     ...props
 }) => {
@@ -183,49 +185,65 @@ export const Button: React.FC<ButtonProps> = ({
         ? ""
         : "[filter:drop-shadow(1px_1px_0px_rgba(10,10,10,0.2))]";
 
+    const child = asChild
+        ? (React.Children.only(children) as ReactElement<AnchorHTMLAttributes<HTMLAnchorElement>>)
+        : null;
+    const visualChildren = child ? child.props.children : children;
+
+    const content = iconOnly ? (
+        <span
+            className={cx("flex items-center justify-center", iconShadow)}
+            style={{ width: iconPx, height: iconPx }}
+            aria-hidden="true"
+        >
+            {leftIcon ?? rightIcon ?? visualChildren}
+        </span>
+    ) : (
+        <>
+            {leftIcon && (
+                <span
+                    className={cx("flex shrink-0 items-center justify-center", iconShadow)}
+                    style={{ width: iconPx, height: iconPx }}
+                    aria-hidden="true"
+                >
+                    {leftIcon}
+                </span>
+            )}
+
+            <span className="leading-tight tracking-wide">{visualChildren}</span>
+
+            {rightIcon && (
+                <span
+                    className={cx("flex shrink-0 items-center justify-center", iconShadow)}
+                    style={{ width: iconPx, height: iconPx }}
+                    aria-hidden="true"
+                >
+                    {rightIcon}
+                </span>
+            )}
+        </>
+    );
+
+    const buttonClassName = cx(BASE, stateClass, sizeClass, className);
+
+    if (child) {
+        return React.cloneElement(child, {
+            className: cx(buttonClassName, child.props.className),
+            children: content,
+            "aria-disabled": disabled || undefined,
+            "aria-pressed": pressed || undefined,
+        });
+    }
+
     return (
         <button
-            className={cx(BASE, stateClass, sizeClass, className)}
+            className={buttonClassName}
             disabled={disabled}
             aria-pressed={pressed || undefined}
             aria-disabled={disabled}
             {...props}
         >
-            {iconOnly ? (
-                // ── Mode ikon saja ──────────────────────────────────────────
-                <span
-                    className={cx("flex items-center justify-center", iconShadow)}
-                    style={{ width: iconPx, height: iconPx }}
-                    aria-hidden="true"
-                >
-                    {leftIcon ?? rightIcon ?? children}
-                </span>
-            ) : (
-                // ── Mode teks (+ ikon opsional kiri/kanan) ──────────────────
-                <>
-                    {leftIcon && (
-                        <span
-                            className={cx("flex shrink-0 items-center justify-center", iconShadow)}
-                            style={{ width: iconPx, height: iconPx }}
-                            aria-hidden="true"
-                        >
-                            {leftIcon}
-                        </span>
-                    )}
-
-                    <span className="leading-tight tracking-wide">{children}</span>
-
-                    {rightIcon && (
-                        <span
-                            className={cx("flex shrink-0 items-center justify-center", iconShadow)}
-                            style={{ width: iconPx, height: iconPx }}
-                            aria-hidden="true"
-                        >
-                            {rightIcon}
-                        </span>
-                    )}
-                </>
-            )}
+            {content}
         </button>
     );
 };

@@ -1,5 +1,7 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
+
 import { Button } from "./button";
 
 export interface CardGameProps {
@@ -11,6 +13,8 @@ export interface CardGameProps {
     imageSrc?: string;
     /** Teks pada tombol. Default: "LET'S PLAY" */
     buttonText?: string;
+    /** Link tujuan saat tombol diklik. */
+    href?: string;
     /** Event handler saat tombol diklik. */
     onButtonClick?: () => void;
     /** Tambahan class Tailwind. */
@@ -38,6 +42,7 @@ export const CardGame: React.FC<CardGameProps> = ({
     description,
     imageSrc = "/card-game-thumb.png",
     buttonText = "LET'S PLAY",
+    href,
     onButtonClick,
     className = "",
 }) => {
@@ -69,14 +74,20 @@ export const CardGame: React.FC<CardGameProps> = ({
             </div>
 
             {/* Action Button (20309:4481) */}
-            <Button
-                variant="primary"
-                size="md"
-                className="w-full"
-                onClick={onButtonClick}
-            >
-                {buttonText}
-            </Button>
+            {href ? (
+                <Button asChild variant="primary" size="md" className="w-full">
+                    <Link href={href}>{buttonText}</Link>
+                </Button>
+            ) : (
+                <Button
+                    variant="primary"
+                    size="md"
+                    className="w-full"
+                    onClick={onButtonClick}
+                >
+                    {buttonText}
+                </Button>
+            )}
         </div>
     );
 };
