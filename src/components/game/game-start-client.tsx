@@ -47,7 +47,8 @@ export function GameStartClient({
   const [timeLeft, setTimeLeft] = useState(level.durationSeconds);
   const [isPaused, setIsPaused] = useState(false);
   const [notification, setNotification] = useState<"success" | "error" | null>(null);
-  const [countdown, setCountdown] = useState<number | null>(null);
+  const [countdown, setCountdown] = useState<number | null>(3);
+  const [countdownRunId, setCountdownRunId] = useState(0);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const currentRound = level.rounds[currentRoundIndex];
@@ -93,6 +94,33 @@ export function GameStartClient({
   }, [notification]);
 
   useEffect(() => {
+    const steps = [3, 2, 1, 0] as const;
+    let stepIndex = 0;
+
+    const intervalId = window.setInterval(() => {
+      stepIndex += 1;
+
+      if (stepIndex >= steps.length) {
+        window.clearInterval(intervalId);
+        setCountdown(null);
+        return;
+      }
+
+      setCountdown(steps[stepIndex]);
+    }, 1000);
+
+    const fallbackId = window.setTimeout(() => {
+      window.clearInterval(intervalId);
+      setCountdown(null);
+    }, 4500);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.clearTimeout(fallbackId);
+    };
+  }, [countdownRunId]);
+
+  useEffect(() => {
     if (countdown !== null || showSuccessModal || isPaused || timeLeft <= 0) {
       return;
     }
@@ -120,7 +148,8 @@ export function GameStartClient({
     setTimeLeft(level.durationSeconds);
     setIsPaused(false);
     setNotification(null);
-    setCountdown(null);
+    setCountdown(3);
+    setCountdownRunId((runId) => runId + 1);
     setShowSuccessModal(false);
   }
 

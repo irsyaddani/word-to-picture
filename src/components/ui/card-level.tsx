@@ -65,7 +65,7 @@ export const CardLevel: React.FC<CardLevelProps> = ({
                 </h3>
 
                 {active ? (
-                    <div className="flex gap-[8px] items-center">
+                    <div className="flex gap-2 items-center">
                         {[1, 2, 3].map((s) => (
                             <Star key={s} active={s <= stars} size={28} />
                         ))}
