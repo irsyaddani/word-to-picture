@@ -141,6 +141,7 @@ export function GameStartClient({
   const isLastRound = currentRoundIndex === rounds.length - 1;
   const isInteractionDisabled = countdown !== null || isPaused || notification !== null || showSuccessModal;
   const progressValue = isCorrect ? currentRoundIndex + 1 : currentRoundIndex;
+  const potentialStars = calculateStars(wrongAnswerCount);
 
   useEffect(() => {
     const timerId = window.setTimeout(() => {
@@ -306,8 +307,7 @@ export function GameStartClient({
             round={currentRound}
             placedAnswer={placedAnswer}
             isCorrect={isCorrect}
-            hasError={notification === "error"}
-          />
+            hasError={notification === "error"} progressValue={0} totalRounds={0}          />
 
           <GameAnswerFooter
             isCorrect={isCorrect}

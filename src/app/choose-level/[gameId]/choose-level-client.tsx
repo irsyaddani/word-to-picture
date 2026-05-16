@@ -8,6 +8,7 @@ import { getLevelStars } from "@/components/game/progress-storage";
 import { GameBackground } from "@/components/ui/background";
 import { Button } from "@/components/ui/button";
 import { CardLevel } from "@/components/ui/card-level";
+import { HomeIcon } from "@/components/game/game-icons";
 
 function ArrowLeftIcon() {
   return (
@@ -78,27 +79,22 @@ export function ChooseLevelClient({ game }: ChooseLevelClientProps) {
   return (
     <GameBackground className="bg-parchment-100">
       <main className="flex min-h-screen flex-col">
-        <header className="grid min-h-25 grid-cols-[auto_1fr] items-center gap-4 bg-white/20 px-5 py-4 sm:grid-cols-[234px_1fr_234px] sm:px-6">
-          <div className="flex items-center gap-3">
-            <Button asChild variant="neutral" size="lg" iconOnly>
-              <Link href={`/how-to-play/${game.id}`} aria-label="Back to how to play">
-                <ArrowLeftIcon />
-              </Link>
-            </Button>
-            <Button type="button" variant="secondary" size="lg" iconOnly aria-label="Sound">
-              <VolumeIcon />
-            </Button>
-          </div>
+        <header className="flex min-h-22 items-center justify-between gap-4 bg-white/20 px-5 py-4 sm:min-h-26 sm:px-6">
+          <Button asChild variant="neutral" size="lg" iconOnly>
+            <Link href="/choose-game" aria-label="Kembali ke beranda">
+              <ArrowLeftIcon />
+            </Link>
+          </Button>
 
           <h1 className="text-display3 text-stroke-4 text-stroke-white text-center text-state-feature-darker [text-shadow:0px_2px_12px_rgba(15,15,15,0.1)] sm:text-display2">
             Choose Your Mission!
           </h1>
 
-          <div className="col-span-2 flex flex-col items-end gap-1 text-right sm:col-span-1">
-            <p className="text-h6-extrabold text-stroke-4 text-stroke-white text-purple-600">
-              {game.title}
-            </p>
-          </div>
+          <Button asChild variant="secondary" size="lg" iconOnly>
+            <Link href="/" aria-label="Kembali ke beranda">
+              <HomeIcon />
+            </Link>
+          </Button>
         </header>
 
         <section className="flex flex-1 items-center overflow-hidden px-5 py-9 sm:px-10 lg:px-20">

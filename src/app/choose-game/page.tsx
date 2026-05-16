@@ -4,6 +4,7 @@ import { games } from "@/data/games";
 import { GameBackground } from "@/components/ui/background";
 import { Button } from "@/components/ui/button";
 import { CardGame } from "@/components/ui/card-game";
+import { HomeIcon } from "@/components/game/game-icons";
 
 function ArrowLeftIcon() {
   return (
@@ -54,25 +55,24 @@ function VolumeIcon() {
 
 export default function ChooseGamePage() {
   return (
-    <GameBackground className="bg-[var(--color-parchment-100)]">
+    <GameBackground className="bg-parchment-100">
       <main className="flex min-h-screen flex-col">
-        <header className="flex min-h-[88px] items-center justify-between gap-4 bg-white/20 px-5 py-4 sm:min-h-[100px] sm:px-6">
-          <div className="flex w-[116px] items-center gap-3 sm:w-[204px]">
-            <Button asChild variant="neutral" size="lg" iconOnly>
-              <Link href="/" aria-label="Kembali ke beranda">
-                <ArrowLeftIcon />
-              </Link>
-            </Button>
-            <Button type="button" variant="secondary" size="lg" iconOnly aria-label="Suara">
-              <VolumeIcon />
-            </Button>
-          </div>
+        <header className="flex min-h-22 items-center justify-between gap-4 bg-white/20 px-5 py-4 sm:min-h-26 sm:px-6">
+          <Button asChild variant="neutral" size="lg" iconOnly>
+            <Link href="/" aria-label="Kembali ke beranda">
+              <ArrowLeftIcon />
+            </Link>
+          </Button>
 
           <h1 className="text-display3 text-stroke-4 text-stroke-white text-center text-state-feature-darker [text-shadow:0px_2px_12px_rgba(15,15,15,0.1)] sm:text-display2">
             Choose Your Game!
           </h1>
 
-          <div className="hidden w-[204px] sm:block" aria-hidden="true" />
+          <Button asChild variant="secondary" size="lg" iconOnly>
+            <Link href="/" aria-label="Kembali ke beranda">
+              <HomeIcon />
+            </Link>
+          </Button>
         </header>
 
         <section className="flex flex-1 items-center overflow-hidden px-5 py-9 sm:px-10 lg:px-20">

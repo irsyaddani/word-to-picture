@@ -1,3 +1,44 @@
+export function ArrowLeftIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M15 5 8 12l7 7"
+        stroke="currentColor"
+        strokeWidth="2.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function HomeIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M4.75 10.6 12 4.75l7.25 5.85v7.65a1 1 0 0 1-1 1h-3.5v-5.5h-5.5v5.5h-3.5a1 1 0 0 1-1-1V10.6Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 export function PauseIcon() {
   return (
     <svg

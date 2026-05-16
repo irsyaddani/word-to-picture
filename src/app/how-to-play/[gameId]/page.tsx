@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { games, getGameById } from "@/data/games";
 import { GameBackground } from "@/components/ui/background";
 import { Button } from "@/components/ui/button";
+import { HomeIcon } from "@/components/game/game-icons";
 
 function ArrowLeftIcon() {
   return (
@@ -93,33 +94,32 @@ export default async function HowToPlayPage({
   return (
     <GameBackground className="bg-parchment-100">
       <main className="flex min-h-screen flex-col">
-        <header className="grid min-h-25 grid-cols-[auto_1fr] items-center gap-4 bg-white/20 px-5 py-4 sm:grid-cols-[234px_1fr_234px] sm:px-6">
-          <div className="flex items-center gap-3">
-            <Button asChild variant="neutral" size="lg" iconOnly>
-              <Link href="/choose-game" aria-label="Kembali ke pilih permainan">
-                <ArrowLeftIcon />
-              </Link>
-            </Button>
-            <Button type="button" variant="secondary" size="lg" iconOnly aria-label="Suara">
-              <VolumeIcon />
-            </Button>
-          </div>
+        <header className="flex min-h-22 items-center justify-between gap-4 bg-white/20 px-5 py-4 sm:min-h-26 sm:px-6">
+          <Button asChild variant="neutral" size="lg" iconOnly>
+            <Link href="/choose-game" aria-label="Kembali ke beranda">
+              <ArrowLeftIcon />
+            </Link>
+          </Button>
 
           <h1 className="text-display3 text-stroke-4 text-stroke-white text-center text-state-feature-darker [text-shadow:0px_2px_12px_rgba(15,15,15,0.1)] sm:text-display2">
-            HOW TO PLAY?
+            {game.title}
           </h1>
 
-          <div className="col-span-2 flex flex-col items-end gap-1 text-right sm:col-span-1">
-            <p className="text-h6-extrabold text-stroke-4 text-stroke-white text-purple-600">{game.title}</p>
-            {/* <p className="text-b3-semibold text-text-white sm:text-b4-semibold">
-              {game.description}
-            </p> */}
-          </div>
+          <Button asChild variant="secondary" size="lg" iconOnly>
+            <Link href="/" aria-label="Kembali ke beranda">
+              <HomeIcon />
+            </Link>
+          </Button>
         </header>
 
         <section className="flex flex-1 items-start justify-center px-5 py-9 sm:px-10 lg:px-20">
           <div className="flex w-full max-w-142.5 flex-col items-end gap-10">
-            <div className="w-full rounded-[36px] bg-parchment-50 p-6 shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_0px_var(--color-parchment-base)] sm:p-8">
+            <div className="w-full rounded-[36px] space-y-4 bg-parchment-50 p-6 shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_0px_var(--color-parchment-base)] sm:p-8">
+
+              <p className="text-h6-extrabold text-purple-600">
+                How to Play?
+              </p>
+
               <ol className="list-decimal space-y-3 pl-6 text-b2-semibold text-text-strong sm:text-b1-semibold">
                 {game.howToPlay.instructions.map((instruction) => (
                   <li key={instruction} className="pl-1">
