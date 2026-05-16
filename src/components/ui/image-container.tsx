@@ -33,14 +33,14 @@ export const ImageContainer: React.FC<ImageContainerProps> = ({
 }) => {
     return (
         <div className={`
-            relative flex flex-col items-center justify-center p-[24px] rounded-[36px]
-            bg-[var(--color-parchment-50)] border-[4px] border-white
+            relative flex flex-col items-center justify-center p-6 rounded-[36px]
+            bg-parchment-50 border-4 border-white
             shadow-[0px_2px_12px_rgba(15,15,15,0.1)]
-            w-full max-w-[476px] min-h-[316px]
+            w-full max-w-119 min-h-79
             ${className}
         `}>
             {imageSrc ? (
-                <div className="relative w-full aspect-[4/3] rounded-[24px] overflow-hidden">
+                <div className="relative w-full aspect-4/3 rounded-3xl overflow-hidden">
                     <Image
                         src={imageSrc}
                         alt={alt}
@@ -51,14 +51,14 @@ export const ImageContainer: React.FC<ImageContainerProps> = ({
                 </div>
             ) : (
                 /* Placeholder jika gambar belum tersedia */
-                <div className="flex flex-col items-center justify-center w-full aspect-[4/3] bg-[var(--color-neutral-200)] rounded-[24px] border-2 border-dashed border-[var(--color-neutral-400)]">
-                    <p className="text-b3-medium text-[var(--color-neutral-500)]">Pilih Gambar</p>
+                <div className="flex flex-col items-center justify-center w-full aspect-4/3 bg-(--color-neutral-200) rounded-3xl border-2 border-dashed border-neutral-400">
+                    <p className="text-b3-medium text-(--color-neutral-500)">Pilih Gambar</p>
                 </div>
             )}
 
             {/* Slot untuk elemen tambahan (misal: tombol Close atau Status) */}
             {children && (
-                <div className="w-full mt-[12px]">
+                <div className="w-full mt-3">
                     {children}
                 </div>
             )}

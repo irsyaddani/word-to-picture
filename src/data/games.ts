@@ -122,17 +122,21 @@ const roundSeedsByGameId: Record<string, Record<1 | 2, RoundSeed[]>> = {
 };
 
 function createRound(gameId: string, level: 1 | 2, roundNumber: number, seed: RoundSeed): GameLevelRound {
-  const correctAnswerId = `${gameId}-level-${level}-round-${roundNumber}-answer-1`;
+  const correctAnswerId = `${gameId}-level-${level}-round-${roundNumber}-answer-correct`;
+  const answers = [
+    { id: correctAnswerId, label: seed.correctAnswer },
+    ...seed.distractors.map((label, distractorIndex) => ({
+      id: `${gameId}-level-${level}-round-${roundNumber}-answer-distractor-${distractorIndex + 1}`,
+      label,
+    })),
+  ];
 
   return {
     id: `${gameId}-level-${level}-round-${roundNumber}`,
     promptImageSrc: "/card-game-thumb.png",
     promptImageAlt: `Gambar ${seed.correctAnswer}`,
     correctAnswerId,
-    answers: [seed.correctAnswer, ...seed.distractors].map((label, answerIndex) => ({
-      id: `${gameId}-level-${level}-round-${roundNumber}-answer-${answerIndex + 1}`,
-      label,
-    })),
+    answers,
   };
 }
 

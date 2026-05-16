@@ -8,14 +8,12 @@ export type DraggableAnswerCardProps = {
   answer: GameAnswerOption;
   disabled?: boolean;
   shakeHint?: boolean;
-  onSelect?: (answerId: string) => void;
 };
 
 export function DraggableAnswerCard({
   answer,
   disabled = false,
   shakeHint = false,
-  onSelect,
 }: DraggableAnswerCardProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: answer.id,
@@ -36,11 +34,6 @@ export function DraggableAnswerCard({
       style={style}
       {...listeners}
       {...attributes}
-      onClick={() => {
-        if (!disabled && !isDragging) {
-          onSelect?.(answer.id);
-        }
-      }}
       className={`touch-none select-none ${hintClass} ${disabled ? "pointer-events-none opacity-60" : isDragging ? "opacity-40" : ""}`}
     >
       <AnswerCard state="default" disabled={disabled}>

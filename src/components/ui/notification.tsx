@@ -30,12 +30,12 @@ export const Notification: React.FC<NotificationProps> = ({
 }) => {
     return (
         <div className={`
-            flex flex-col items-center justify-center px-[20px] py-[16px] rounded-[20px]
-            shadow-[0px_2px_12px_rgba(15,15,15,0.1)] transition-all duration-300 w-fit max-w-[400px]
-            ${type === "success" ? "bg-[var(--color-teal-500)]" : ""}
-            ${type === "warning" ? "bg-[var(--color-yellow-500)]" : ""}
-            ${type === "error" ? "bg-[var(--color-red-500)]" : ""}
-            ${type === "info" ? "bg-[var(--color-blue-500)]" : ""}
+            flex flex-col items-center justify-center px-5 py-4 rounded-[20px]
+            shadow-[0px_2px_12px_rgba(15,15,15,0.1)] transition-all duration-300 w-fit max-w-100
+            ${type === "success" ? "bg-(--color-teal-500)" : ""}
+            ${type === "warning" ? "bg-yellow-500" : ""}
+            ${type === "error" ? "bg-red-500" : ""}
+            ${type === "info" ? "bg-blue-500" : ""}
             ${className}
         `}>
             <p className="text-b1-extrabold text-white text-center leading-snug">

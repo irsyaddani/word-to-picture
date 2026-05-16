@@ -10,7 +10,6 @@ type GameAnswerFooterProps = {
   interactionDisabled: boolean;
   shakeHint: boolean;
   onNextRound: () => void;
-  onSelectAnswer: (answerId: string) => void;
 };
 
 export function GameAnswerFooter({
@@ -20,7 +19,6 @@ export function GameAnswerFooter({
   interactionDisabled,
   shakeHint,
   onNextRound,
-  onSelectAnswer,
 }: GameAnswerFooterProps) {
   return (
     <footer className="bg-parchment-50 px-5 py-5 sm:px-9 sm:py-10">
@@ -46,7 +44,6 @@ export function GameAnswerFooter({
               answer={answer}
               disabled={interactionDisabled}
               shakeHint={shakeHint}
-              onSelect={onSelectAnswer}
             />
           ))}
         </div>

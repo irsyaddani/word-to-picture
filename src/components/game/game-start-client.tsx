@@ -39,18 +39,54 @@ function formatTimer(totalSeconds: number): string {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
-function shuffleRounds(rounds: GameLevelRound[]): GameLevelRound[] {
-  const shuffledRounds = [...rounds];
+const notificationMessages = {
+  success: [
+    "Excellent move, you nailed it!",
+    "You solved it perfectly!",
+    "You are shining bright today!",
+    "You are unstoppable right now!",
+  ],
+  error: [
+    "Take a deep breath and try again!",
+    "Oops, a little mix-up!",
+    "Almost had it, explorer!",
+    "That was a tricky one!",
+  ],
+};
 
-  for (let index = shuffledRounds.length - 1; index > 0; index -= 1) {
+function getRandomItem<T>(items: T[]): T {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+function shuffleArray<T>(items: T[]): T[] {
+  const shuffledItems = [...items];
+
+  for (let index = shuffledItems.length - 1; index > 0; index -= 1) {
     const targetIndex = Math.floor(Math.random() * (index + 1));
-    [shuffledRounds[index], shuffledRounds[targetIndex]] = [
-      shuffledRounds[targetIndex],
-      shuffledRounds[index],
+    [shuffledItems[index], shuffledItems[targetIndex]] = [
+      shuffledItems[targetIndex],
+      shuffledItems[index],
     ];
   }
 
-  return shuffledRounds;
+  return shuffledItems;
+}
+
+function shuffleAnswers(round: GameLevelRound): GameLevelRound {
+  const answers = shuffleArray(round.answers);
+
+  if (answers[0]?.id === round.correctAnswerId && answers.length > 1) {
+    [answers[0], answers[1]] = [answers[1], answers[0]];
+  }
+
+  return {
+    ...round,
+    answers,
+  };
+}
+
+function shuffleRounds(rounds: GameLevelRound[]): GameLevelRound[] {
+  return shuffleArray(rounds).map(shuffleAnswers);
 }
 
 export function GameStartClient({
@@ -60,13 +96,14 @@ export function GameStartClient({
   nextLevelHref,
 }: GameStartClientProps) {
   const router = useRouter();
-  const [rounds, setRounds] = useState<GameLevelRound[]>(() => shuffleRounds(level.rounds));
+  const [rounds, setRounds] = useState<GameLevelRound[]>(level.rounds);
   const [activeAnswerId, setActiveAnswerId] = useState<string | null>(null);
   const [placedAnswerId, setPlacedAnswerId] = useState<string | null>(null);
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(level.durationSeconds);
   const [isPaused, setIsPaused] = useState(false);
   const [notification, setNotification] = useState<"success" | "error" | null>(null);
+  const [notificationMessage, setNotificationMessage] = useState("");
   const [wrongAnswerCount, setWrongAnswerCount] = useState(0);
   const [earnedStars, setEarnedStars] = useState(0);
   const [countdown, setCountdown] = useState<number | null>(3);
@@ -104,6 +141,14 @@ export function GameStartClient({
   const isLastRound = currentRoundIndex === rounds.length - 1;
   const isInteractionDisabled = countdown !== null || isPaused || notification !== null || showSuccessModal;
   const progressValue = isCorrect ? currentRoundIndex + 1 : currentRoundIndex;
+
+  useEffect(() => {
+    const timerId = window.setTimeout(() => {
+      setRounds(shuffleRounds(level.rounds));
+    }, 0);
+
+    return () => window.clearTimeout(timerId);
+  }, [level.rounds]);
 
   useEffect(() => {
     if (level.level === 2 && getLevelStars(gameId, 1) < 2) {
@@ -177,6 +222,7 @@ export function GameStartClient({
     setTimeLeft(level.durationSeconds);
     setIsPaused(false);
     setNotification(null);
+    setNotificationMessage("");
     setWrongAnswerCount(0);
     setEarnedStars(0);
     setCountdown(3);
@@ -192,6 +238,7 @@ export function GameStartClient({
     setPlacedAnswerId(answerId);
 
     if (answerId === currentRound.correctAnswerId) {
+      setNotificationMessage(getRandomItem(notificationMessages.success));
       setNotification("success");
       if (isLastRound) {
         const stars = calculateStars(wrongAnswerCount);
@@ -203,12 +250,16 @@ export function GameStartClient({
       }
     } else {
       setWrongAnswerCount((count) => count + 1);
+      setNotificationMessage(getRandomItem(notificationMessages.error));
       setNotification("error");
     }
   }
 
   function handleNextRound() {
     if (currentRoundIndex < rounds.length - 1) {
+      setRounds((currentRounds) => currentRounds.map((round, index) => (
+        index === currentRoundIndex + 1 ? shuffleAnswers(round) : round
+      )));
       setCurrentRoundIndex((prev) => prev + 1);
       setPlacedAnswerId(null);
       setNotification(null);
@@ -265,7 +316,6 @@ export function GameStartClient({
             interactionDisabled={isInteractionDisabled}
             shakeHint={countdown === null}
             onNextRound={handleNextRound}
-            onSelectAnswer={submitAnswer}
           />
         </main>
 
@@ -314,11 +364,7 @@ export function GameStartClient({
             <div className="animate-[fadeInUp_0.3s_ease-out]">
               <Notification
                 type={notification === "success" ? "success" : "error"}
-                message={
-                  notification === "success"
-                    ? "Excellent move, you nailed it!"
-                    : "Oops, a little mix-up! Try again!"
-                }
+                message={notificationMessage}
               />
             </div>
           </div>

@@ -76,9 +76,9 @@ export function ChooseLevelClient({ game }: ChooseLevelClientProps) {
   }, [game]);
 
   return (
-    <GameBackground className="bg-[var(--color-parchment-100)]">
+    <GameBackground className="bg-parchment-100">
       <main className="flex min-h-screen flex-col">
-        <header className="grid min-h-[100px] grid-cols-[auto_1fr] items-center gap-4 bg-white/20 px-5 py-4 sm:grid-cols-[234px_1fr_234px] sm:px-6">
+        <header className="grid min-h-25 grid-cols-[auto_1fr] items-center gap-4 bg-white/20 px-5 py-4 sm:grid-cols-[234px_1fr_234px] sm:px-6">
           <div className="flex items-center gap-3">
             <Button asChild variant="neutral" size="lg" iconOnly>
               <Link href={`/how-to-play/${game.id}`} aria-label="Back to how to play">
