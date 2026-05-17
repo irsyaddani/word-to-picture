@@ -24,7 +24,7 @@ import { GameHeader } from "@/components/game/game-header";
 import { GamePromptArea } from "@/components/game/game-prompt-area";
 import { PauseModal } from "@/components/game/pause-modal";
 import { calculateStars, getLevelStars, saveLevelStars } from "@/components/game/progress-storage";
-import { SuccessModal } from "@/components/game/success-modal";
+import { FailedModal, SuccessModal } from "@/components/game/success-modal";
 
 type GameStartClientProps = {
   gameId: string;
@@ -72,11 +72,20 @@ function shuffleArray<T>(items: T[]): T[] {
   return shuffledItems;
 }
 
-function shuffleAnswers(round: GameLevelRound): GameLevelRound {
+function shuffleAnswers(
+  round: GameLevelRound,
+  previousCorrectIndex?: number,
+): GameLevelRound {
   const answers = shuffleArray(round.answers);
+  const correctIndex = answers.findIndex((answer) => answer.id === round.correctAnswerId);
 
-  if (answers[0]?.id === round.correctAnswerId && answers.length > 1) {
-    [answers[0], answers[1]] = [answers[1], answers[0]];
+  if (previousCorrectIndex !== undefined && correctIndex === previousCorrectIndex && answers.length > 1) {
+    const swapIndex = (correctIndex + 1) % answers.length;
+
+    [answers[correctIndex], answers[swapIndex]] = [
+      answers[swapIndex],
+      answers[correctIndex],
+    ];
   }
 
   return {
@@ -86,7 +95,17 @@ function shuffleAnswers(round: GameLevelRound): GameLevelRound {
 }
 
 function shuffleRounds(rounds: GameLevelRound[]): GameLevelRound[] {
-  return shuffleArray(rounds).map(shuffleAnswers);
+  let previousCorrectIndex: number | undefined;
+
+  return shuffleArray(rounds).map((round) => {
+    const shuffledRound = shuffleAnswers(round, previousCorrectIndex);
+
+    previousCorrectIndex = shuffledRound.answers.findIndex(
+      (answer) => answer.id === shuffledRound.correctAnswerId,
+    );
+
+    return shuffledRound;
+  });
 }
 
 export function GameStartClient({
@@ -97,6 +116,7 @@ export function GameStartClient({
 }: GameStartClientProps) {
   const router = useRouter();
   const [rounds, setRounds] = useState<GameLevelRound[]>(level.rounds);
+  const [hasPreparedRounds, setHasPreparedRounds] = useState(false);
   const [activeAnswerId, setActiveAnswerId] = useState<string | null>(null);
   const [placedAnswerId, setPlacedAnswerId] = useState<string | null>(null);
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
@@ -109,6 +129,7 @@ export function GameStartClient({
   const [countdown, setCountdown] = useState<number | null>(3);
   const [countdownRunId, setCountdownRunId] = useState(0);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showFailedModal, setShowFailedModal] = useState(false);
 
   const currentRound = rounds[currentRoundIndex];
   const sensors = useSensors(
@@ -139,16 +160,13 @@ export function GameStartClient({
   );
   const isCorrect = placedAnswer?.id === currentRound.correctAnswerId;
   const isLastRound = currentRoundIndex === rounds.length - 1;
-  const isInteractionDisabled = countdown !== null || isPaused || notification !== null || showSuccessModal;
+  const isInteractionDisabled = countdown !== null || isPaused || notification !== null || showSuccessModal || showFailedModal;
   const progressValue = isCorrect ? currentRoundIndex + 1 : currentRoundIndex;
-  const potentialStars = calculateStars(wrongAnswerCount);
+  // const potentialStars = calculateStars(wrongAnswerCount);
 
   useEffect(() => {
-    const timerId = window.setTimeout(() => {
-      setRounds(shuffleRounds(level.rounds));
-    }, 0);
-
-    return () => window.clearTimeout(timerId);
+    setRounds(shuffleRounds(level.rounds));
+    setHasPreparedRounds(true);
   }, [level.rounds]);
 
   useEffect(() => {
@@ -195,16 +213,28 @@ export function GameStartClient({
   }, [countdownRunId]);
 
   useEffect(() => {
-    if (countdown !== null || showSuccessModal || isPaused || timeLeft <= 0) {
+    if (countdown !== null || showSuccessModal || showFailedModal || isPaused || timeLeft <= 0) {
       return;
     }
 
     const timerId = window.setInterval(() => {
-      setTimeLeft((currentTime) => Math.max(0, currentTime - 1));
+      if (timeLeft <= 1) {
+        setTimeLeft(0);
+
+        // if (!(isLastRound && isCorrect)) {
+        //   setActiveAnswerId(null);
+        //   setNotification(null);
+        //   setShowFailedModal(true);
+        // }
+
+        return;
+      }
+
+      setTimeLeft(timeLeft - 1);
     }, 1000);
 
     return () => window.clearInterval(timerId);
-  }, [countdown, showSuccessModal, isPaused, timeLeft]);
+  }, [countdown, isCorrect, isLastRound, showFailedModal, showSuccessModal, isPaused, timeLeft]);
 
   function handlePause() {
     setActiveAnswerId(null);
@@ -216,7 +246,9 @@ export function GameStartClient({
   }
 
   function handleReplay() {
+    setHasPreparedRounds(false);
     setRounds(shuffleRounds(level.rounds));
+    setHasPreparedRounds(true);
     setCurrentRoundIndex(0);
     setActiveAnswerId(null);
     setPlacedAnswerId(null);
@@ -229,6 +261,7 @@ export function GameStartClient({
     setCountdown(3);
     setCountdownRunId((runId) => runId + 1);
     setShowSuccessModal(false);
+    setShowFailedModal(false);
   }
 
   function submitAnswer(answerId: string) {
@@ -299,7 +332,7 @@ export function GameStartClient({
             timeLeft={formatTimer(timeLeft)}
             progressValue={progressValue}
             totalRounds={level.totalRounds}
-            pauseDisabled={countdown !== null || showSuccessModal}
+            pauseDisabled={countdown !== null || showSuccessModal || showFailedModal}
             onPause={handlePause}
           />
 
@@ -307,7 +340,7 @@ export function GameStartClient({
             round={currentRound}
             placedAnswer={placedAnswer}
             isCorrect={isCorrect}
-            hasError={notification === "error"} progressValue={0} totalRounds={0}          />
+            hasError={notification === "error"} progressValue={0} totalRounds={0} />
 
           <GameAnswerFooter
             isCorrect={isCorrect}
@@ -385,6 +418,14 @@ export function GameStartClient({
             chooseLevelHref={chooseLevelHref}
             nextLevelHref={nextLevelHref}
             onReplay={handleReplay}
+          />
+        ) : null}
+
+        {showFailedModal ? (
+          <FailedModal
+            levelTitle={level.title}
+            chooseLevelHref={chooseLevelHref}
+            onRetry={handleReplay}
           />
         ) : null}
       </DndContext>

@@ -12,6 +12,23 @@ type SuccessModalProps = {
   onReplay: () => void;
 };
 
+type FailedModalProps = {
+  levelTitle: string;
+  chooseLevelHref: string;
+  onRetry: () => void;
+};
+
+function ModalLevelBanner({ levelTitle }: { levelTitle: string }) {
+  return (
+    <div
+      style={{ textShadow: "0px 2px 4px rgba(0,0,0,0.2)" }}
+      className="bg-[#751DBA] text-white rounded-b-3xl py-3 px-8 text-display5 border-b-4 border-x-4 border-[#3C0E67] text-center -mt-1 uppercase"
+    >
+      {levelTitle}
+    </div>
+  );
+}
+
 export function SuccessModal({
   levelTitle,
   stars,
@@ -27,12 +44,7 @@ export function SuccessModal({
       aria-labelledby="success-title"
     >
       <div className="relative flex w-full max-w-95 flex-col items-center gap-6 rounded-[36px] bg-parchment-50 pb-7 pt-0 shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_0px_var(--color-parchment-base)] animate-[countdownPop_0.6s_cubic-bezier(0.34,1.56,0.64,1)_both]">
-        <div
-          style={{ textShadow: "0px 2px 4px rgba(0,0,0,0.2)" }}
-          className="bg-[#751DBA] text-white rounded-b-3xl py-3 px-8 text-display5 border-b-4 border-x-4 border-[#3C0E67] text-center -mt-1 uppercase"
-        >
-          {levelTitle}
-        </div>
+        <ModalLevelBanner levelTitle={levelTitle} />
 
         <div className="flex justify-center items-end">
           <div className="animate-[countdownPop_0.5s_cubic-bezier(0.34,1.56,0.64,1)_0.4s_both]">
@@ -128,6 +140,59 @@ export function SuccessModal({
               REPLAY
             </Button>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function FailedModal({
+  levelTitle,
+  chooseLevelHref,
+  onRetry,
+}: FailedModalProps) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-5"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="failed-title"
+    >
+      <div className="relative flex w-full max-w-95 flex-col items-center gap-6 rounded-[36px] bg-parchment-50 pb-7 pt-0 shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_0px_var(--color-parchment-base)] animate-[countdownPop_0.6s_cubic-bezier(0.34,1.56,0.64,1)_both]">
+        <ModalLevelBanner levelTitle={levelTitle} />
+
+        <div className="flex flex-col items-center gap-0 pt-8">
+          <h2
+            id="failed-title"
+            className="text-display1 text-state-error-base uppercase animate-[countdownPop_0.6s_ease-out_0.2s_both]"
+            style={{
+              textShadow: "0px 2px 0px #FFFFFF, 0px 4px 12px rgba(15, 15, 15, 0.1)",
+            }}
+          >
+            FAILED
+          </h2>
+        </div>
+
+        <div className="grid w-full grid-cols-2 gap-3 px-7">
+          <Button
+            asChild
+            variant="error"
+            size="lg"
+            leftIcon={<LogoutIcon />}
+            className="w-full text-b3-extrabold"
+          >
+            <Link href={chooseLevelHref}>EXIT</Link>
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            size="lg"
+            leftIcon={<ReplayIcon />}
+            className="w-full text-b3-extrabold"
+            onClick={onRetry}
+          >
+            RETRY
+          </Button>
         </div>
       </div>
     </div>

@@ -38,6 +38,17 @@ type RoundSeed = {
   distractors: string[];
 };
 
+function toImageSlug(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function getRoundImageSrc(gameId: string, level: 1 | 2, correctAnswer: string): string {
+  return `/images/games/${gameId}/level-${level}/${toImageSlug(correctAnswer)}.png`;
+}
+
 const roundSeedsByGameId: Record<string, Record<1 | 2, RoundSeed[]>> = {
   "what-time-is-it": {
     1: [
@@ -133,7 +144,7 @@ function createRound(gameId: string, level: 1 | 2, roundNumber: number, seed: Ro
 
   return {
     id: `${gameId}-level-${level}-round-${roundNumber}`,
-    promptImageSrc: "/card-game-thumb.png",
+    promptImageSrc: getRoundImageSrc(gameId, level, seed.correctAnswer),
     promptImageAlt: `Gambar ${seed.correctAnswer}`,
     correctAnswerId,
     answers,
@@ -152,7 +163,7 @@ function createLevel(gameId: string, level: 1 | 2): GameLevel {
     active: true,
     stars: 0,
     totalRounds: rounds.length,
-    durationSeconds: level === 1 ? 120 : 55,
+    durationSeconds: level === 1 ? 60 : 55,
     rounds,
   };
 }
