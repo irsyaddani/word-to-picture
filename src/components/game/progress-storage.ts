@@ -23,6 +23,14 @@ function writeProgress(progress: GameProgress) {
   window.localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(progress));
 }
 
+export function resetGameProgress() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.localStorage.removeItem(PROGRESS_STORAGE_KEY);
+}
+
 export function calculateStars(wrongAnswerCount: number): number {
   if (wrongAnswerCount <= 2) {
     return 3;

@@ -110,7 +110,7 @@ export function ChooseLevelClient({ game }: ChooseLevelClientProps) {
                   active={active}
                   stars={stars}
                   href={active ? level.href : undefined}
-                  unlockMessage="Raih minimal 2 bintang di Level 1"
+                  unlockMessage="Reach level 2 to unlock"
                   className="shrink-0 snap-start"
                 />
               );

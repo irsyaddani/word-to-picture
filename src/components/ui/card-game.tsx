@@ -48,13 +48,13 @@ export const CardGame: React.FC<CardGameProps> = ({
 }) => {
     return (
         <div className={`
-            flex flex-col gap-[16px] p-[20px] rounded-[36px] w-[308px]
-            bg-[var(--color-parchment-50)] 
+            flex flex-col gap-4 p-5 rounded-[36px] w-77
+            bg-parchment-50 
             shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_1px_var(--color-parchment-base)]
             ${className}
         `}>
             {/* Header Section (20309:4477) */}
-            <div className="flex flex-col gap-[8px] w-full">
+            <div className="flex flex-col gap-2 w-full">
                 <h4 className="text-h5-extrabold text-text-strong">
                     {title}
                 </h4>
@@ -64,12 +64,12 @@ export const CardGame: React.FC<CardGameProps> = ({
             </div>
 
             {/* Thumbnail Image (20309:4480) */}
-            <div className="relative w-full h-[263px] rounded-[24px] overflow-hidden bg-[#F1E8FF] flex items-center justify-center">
+            <div className="relative w-full h-65.75 rounded-3xl overflow-hidden bg-purple-100 flex items-center justify-center">
                 <Image
                     src={imageSrc}
                     alt={title}
                     fill
-                    className="object-cover p-2"
+                    className="object-contain"
                 />
             </div>
 

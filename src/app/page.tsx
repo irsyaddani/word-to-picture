@@ -1,8 +1,8 @@
 import Link from "next/link";
 
+import { ResetGameProgress } from "@/components/home/reset-game-progress";
 import { Button } from "@/components/ui/button";
 import { GameBackground } from "@/components/ui/background";
-import { ProgressBar } from "@/components/ui/progress-bar";
 
 function AwardIcon() {
   return (
@@ -64,15 +64,15 @@ export default function Home() {
           </div>
 
           <div className="flex w-full max-w-[320px] flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center">
-            <Button
+            {/* <Button
               type="button"
               variant="secondary"
               size="lg"
               leftIcon={<AwardIcon />}
               className="w-full sm:w-auto"
             >
-              My Badges
-            </Button>
+              My Words
+            </Button> */}
             <Button
               asChild
               variant="primary"
@@ -86,6 +86,7 @@ export default function Home() {
         </section>
 
       </main>
+      <ResetGameProgress />
     </GameBackground>
   );
 }

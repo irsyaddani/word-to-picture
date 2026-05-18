@@ -116,7 +116,6 @@ export function GameStartClient({
 }: GameStartClientProps) {
   const router = useRouter();
   const [rounds, setRounds] = useState<GameLevelRound[]>(level.rounds);
-  const [hasPreparedRounds, setHasPreparedRounds] = useState(false);
   const [activeAnswerId, setActiveAnswerId] = useState<string | null>(null);
   const [placedAnswerId, setPlacedAnswerId] = useState<string | null>(null);
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
@@ -165,8 +164,11 @@ export function GameStartClient({
   // const potentialStars = calculateStars(wrongAnswerCount);
 
   useEffect(() => {
-    setRounds(shuffleRounds(level.rounds));
-    setHasPreparedRounds(true);
+    const timerId = window.setTimeout(() => {
+      setRounds(shuffleRounds(level.rounds));
+    }, 0);
+
+    return () => window.clearTimeout(timerId);
   }, [level.rounds]);
 
   useEffect(() => {
@@ -246,9 +248,7 @@ export function GameStartClient({
   }
 
   function handleReplay() {
-    setHasPreparedRounds(false);
     setRounds(shuffleRounds(level.rounds));
-    setHasPreparedRounds(true);
     setCurrentRoundIndex(0);
     setActiveAnswerId(null);
     setPlacedAnswerId(null);

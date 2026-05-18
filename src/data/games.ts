@@ -177,7 +177,7 @@ export const games: GameOption[] = [
     id: "what-time-is-it",
     title: "What Time Is It?",
     description: "Tebak jam berapa sekarang!",
-    imageSrc: "/card-game-thumb.png",
+    imageSrc: "/images/game-cards/what-time-is-it.png",
     howToPlay: {
       instructions: howToPlayInstructions.whatTimeIsIt,
       chooseLevelHref: "/choose-level/what-time-is-it",
@@ -188,7 +188,7 @@ export const games: GameOption[] = [
     id: "vroom-lets-ride",
     title: "Vroom! Let's Ride!",
     description: "Kenali alat transportasi di sekitarmu!",
-    imageSrc: "/card-game-thumb.png",
+    imageSrc: "/images/game-cards/vroom-lets-ride.png",
     howToPlay: {
       instructions: howToPlayInstructions.vroomLetsRide,
       chooseLevelHref: "/choose-level/vroom-lets-ride",
@@ -199,7 +199,7 @@ export const games: GameOption[] = [
     id: "splish-splash-bath",
     title: "Splish Splash Bath!",
     description: "Temukan barang di kamar mandi!",
-    imageSrc: "/card-game-thumb.png",
+    imageSrc: "/images/game-cards/splish-splash-bath.png",
     howToPlay: {
       instructions: howToPlayInstructions.splishSplashBath,
       chooseLevelHref: "/choose-level/splish-splash-bath",
@@ -210,7 +210,7 @@ export const games: GameOption[] = [
     id: "my-cozy-living-room",
     title: "My Cozy Living Room",
     description: "Pasangkan benda di ruang keluarga!",
-    imageSrc: "/card-game-thumb.png",
+    imageSrc: "/images/game-cards/my-cozy-living-room.png",
     howToPlay: {
       instructions: howToPlayInstructions.myCozyLivingRoom,
       chooseLevelHref: "/choose-level/my-cozy-living-room",
@@ -221,7 +221,7 @@ export const games: GameOption[] = [
     id: "my-awesome-class",
     title: "My Awesome Class!",
     description: "Tebak nama benda di kelasmu!",
-    imageSrc: "/card-game-thumb.png",
+    imageSrc: "/images/game-cards/my-awesome-class.png",
     howToPlay: {
       instructions: howToPlayInstructions.myAwesomeClass,
       chooseLevelHref: "/choose-level/my-awesome-class",

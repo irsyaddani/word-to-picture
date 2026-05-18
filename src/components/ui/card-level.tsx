@@ -48,7 +48,7 @@ export const CardLevel: React.FC<CardLevelProps> = ({
             {/* Thumbnail Frame (20309:5200 / 5208) */}
             <div className={`
                 relative w-55 h-60 rounded-3xl overflow-hidden flex items-center justify-center
-                ${active ? "bg-[#FDE7D7]" : "bg-[#E1E4EB]"}
+                ${active ? "bg-orange-100" : "bg-[#E1E4EB]"}
             `}>
                 <Image
                     src={active ? "/card-level-active-thumb.png" : "/card-level-inactive-thumb.png"}

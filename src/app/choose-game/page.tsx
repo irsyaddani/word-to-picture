@@ -28,31 +28,6 @@ function ArrowLeftIcon() {
   );
 }
 
-function VolumeIcon() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d="M4 9.5v5h3.35L12 18.25V5.75L7.35 9.5H4Z"
-        fill="currentColor"
-      />
-      <path
-        d="M15.25 8.25a5.25 5.25 0 0 1 0 7.5M17.75 5.75a8.75 8.75 0 0 1 0 12.5"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 export default function ChooseGamePage() {
   return (
     <GameBackground className="bg-parchment-100">
