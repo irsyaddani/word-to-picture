@@ -12,6 +12,9 @@ type AnswerDropZoneProps = {
 
 export function AnswerDropZone({ answer, isCorrect }: AnswerDropZoneProps) {
   const { setNodeRef, isOver } = useDroppable({ id: DROP_ZONE_ID });
+  const answerText = answer && isCorrect && answer.meaning
+    ? `${answer.label} = ${answer.meaning}`
+    : answer?.label;
 
   return (
     <div ref={setNodeRef} className="w-full" aria-label="Drop answer here">
@@ -19,7 +22,7 @@ export function AnswerDropZone({ answer, isCorrect }: AnswerDropZoneProps) {
         state={answer ? (isCorrect ? "true" : "default") : "placeholder"}
         className={`w-full ${isOver ? "scale-[1.02] ring-4 ring-white/70" : ""}`}
       >
-        {answer?.label ?? "Answer"}
+        {answerText ?? "Answer"}
       </AnswerCard>
     </div>
   );

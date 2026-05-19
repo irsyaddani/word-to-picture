@@ -36,7 +36,7 @@ export const AnswerCard: React.FC<AnswerCardProps> = ({
 }) => {
     const content = (
         <span className={`
-            text-b2-extrabold uppercase tracking-wide
+            min-w-0 whitespace-nowrap text-center text-b3-extrabold uppercase tracking-wide sm:text-b2-extrabold
             ${state === "default" ? "text-text-strong" : ""}
             ${state === "true" ? "text-(--color-teal-500)" : ""}
             ${state === "placeholder" ? "invisible" : ""}

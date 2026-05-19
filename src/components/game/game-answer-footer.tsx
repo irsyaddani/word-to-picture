@@ -21,7 +21,7 @@ export function GameAnswerFooter({
   onNextRound,
 }: GameAnswerFooterProps) {
   return (
-    <footer className="bg-parchment-50 px-5 py-5 sm:px-9 sm:py-10">
+    <footer className="bg-parchment-50 px-3 py-5 sm:px-5 sm:py-10">
       {isCorrect ? (
         <div className="mx-auto flex max-w-120 justify-center">
           {!isLastRound && (
@@ -37,7 +37,7 @@ export function GameAnswerFooter({
           )}
         </div>
       ) : (
-        <div className="mx-auto flex max-w-190 flex-wrap items-center justify-center gap-5">
+        <div className="mx-auto flex w-full max-w-none flex-nowrap items-center justify-center gap-2 sm:gap-3">
           {availableAnswers.map((answer) => (
             <DraggableAnswerCard
               key={answer.id}

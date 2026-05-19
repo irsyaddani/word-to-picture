@@ -101,7 +101,11 @@ export function ChooseLevelClient({ game }: ChooseLevelClientProps) {
           <div className="flex w-full snap-x snap-mandatory gap-6 overflow-x-auto px-1 pb-4 pt-1 lg:justify-center">
             {game.levels.map((level) => {
               const stars = starsByLevel[level.level] ?? 0;
-              const active = level.level === 1 || (starsByLevel[1] ?? 0) >= 2;
+              const previousLevelStars = starsByLevel[level.level - 1] ?? 0;
+              const active = level.level === 1 || previousLevelStars >= 2;
+              const unlockMessage = level.level === 2
+                ? "Earn 2 stars in Level 1 to unlock"
+                : `Reach level ${level.level} to unlock`;
 
               return (
                 <CardLevel
@@ -110,7 +114,7 @@ export function ChooseLevelClient({ game }: ChooseLevelClientProps) {
                   active={active}
                   stars={stars}
                   href={active ? level.href : undefined}
-                  unlockMessage="Reach level 2 to unlock"
+                  unlockMessage={unlockMessage}
                   className="shrink-0 snap-start"
                 />
               );

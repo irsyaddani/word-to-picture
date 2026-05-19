@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   DndContext,
@@ -25,6 +25,7 @@ import { GamePromptArea } from "@/components/game/game-prompt-area";
 import { PauseModal } from "@/components/game/pause-modal";
 import { calculateStars, getLevelStars, saveLevelStars } from "@/components/game/progress-storage";
 import { FailedModal, SuccessModal } from "@/components/game/success-modal";
+import { audioAssets, playSfx } from "@/lib/audio";
 
 type GameStartClientProps = {
   gameId: string;
@@ -108,6 +109,23 @@ function shuffleRounds(rounds: GameLevelRound[]): GameLevelRound[] {
   });
 }
 
+function getLevelBgmSrc(level: number): string {
+  return level === 1 ? audioAssets.bgm.level1 : audioAssets.bgm.level2;
+}
+
+function playLevelBgm(audio: HTMLAudioElement) {
+  void audio.play().catch(() => {
+    const retryPlay = () => {
+      void audio.play().catch(() => undefined);
+      window.removeEventListener("pointerdown", retryPlay);
+      window.removeEventListener("keydown", retryPlay);
+    };
+
+    window.addEventListener("pointerdown", retryPlay, { once: true });
+    window.addEventListener("keydown", retryPlay, { once: true });
+  });
+}
+
 export function GameStartClient({
   gameId,
   level,
@@ -115,6 +133,7 @@ export function GameStartClient({
   nextLevelHref,
 }: GameStartClientProps) {
   const router = useRouter();
+  const levelBgmRef = useRef<HTMLAudioElement | null>(null);
   const [rounds, setRounds] = useState<GameLevelRound[]>(level.rounds);
   const [activeAnswerId, setActiveAnswerId] = useState<string | null>(null);
   const [placedAnswerId, setPlacedAnswerId] = useState<string | null>(null);
@@ -164,12 +183,51 @@ export function GameStartClient({
   // const potentialStars = calculateStars(wrongAnswerCount);
 
   useEffect(() => {
+    const audio = new Audio(getLevelBgmSrc(level.level));
+    audio.loop = true;
+    audio.volume = 0.35;
+    levelBgmRef.current = audio;
+
+    return () => {
+      audio.pause();
+      levelBgmRef.current = null;
+    };
+  }, [level.level]);
+
+  useEffect(() => {
+    const audio = levelBgmRef.current;
+
+    if (!audio) {
+      return;
+    }
+
+    if (countdown === null && !isPaused && !showSuccessModal && !showFailedModal) {
+      playLevelBgm(audio);
+      return;
+    }
+
+    audio.pause();
+  }, [countdown, isPaused, showFailedModal, showSuccessModal]);
+
+  useEffect(() => {
     const timerId = window.setTimeout(() => {
       setRounds(shuffleRounds(level.rounds));
     }, 0);
 
     return () => window.clearTimeout(timerId);
   }, [level.rounds]);
+
+  useEffect(() => {
+    if (showSuccessModal) {
+      playSfx(audioAssets.sfx.modalSuccess);
+    }
+  }, [showSuccessModal]);
+
+  useEffect(() => {
+    if (showFailedModal) {
+      playSfx(audioAssets.sfx.modalFailed);
+    }
+  }, [showFailedModal]);
 
   useEffect(() => {
     if (level.level === 2 && getLevelStars(gameId, 1) < 2) {
@@ -234,11 +292,11 @@ export function GameStartClient({
       if (timeLeft <= 1) {
         setTimeLeft(0);
 
-        // if (!(isLastRound && isCorrect)) {
-        //   setActiveAnswerId(null);
-        //   setNotification(null);
-        //   setShowFailedModal(true);
-        // }
+        if (!(isLastRound && isCorrect)) {
+          setActiveAnswerId(null);
+          setNotification(null);
+          setShowFailedModal(true);
+        }
 
         return;
       }
@@ -283,17 +341,19 @@ export function GameStartClient({
     setPlacedAnswerId(answerId);
 
     if (answerId === currentRound.correctAnswerId) {
+      playSfx(audioAssets.sfx.correct);
       setNotificationMessage(getRandomItem(notificationMessages.success));
       setNotification("success");
       if (isLastRound) {
         const stars = calculateStars(wrongAnswerCount);
-        const bestStars = saveLevelStars(gameId, level.level, stars);
-        setEarnedStars(bestStars);
+        saveLevelStars(gameId, level.level, stars);
+        setEarnedStars(stars);
         window.setTimeout(() => {
           setShowSuccessModal(true);
         }, 1200);
       }
     } else {
+      playSfx(audioAssets.sfx.wrong);
       setWrongAnswerCount((count) => count + 1);
       setNotificationMessage(getRandomItem(notificationMessages.error));
       setNotification("error");
@@ -341,6 +401,7 @@ export function GameStartClient({
           <GameHeader
             title={level.title}
             timeLeft={formatTimer(timeLeft)}
+            timeRemaining={timeLeft}
             progressValue={progressValue}
             totalRounds={level.totalRounds}
             pauseDisabled={countdown !== null || showSuccessModal || showFailedModal}
@@ -426,8 +487,10 @@ export function GameStartClient({
           <SuccessModal
             levelTitle={level.title}
             stars={earnedStars}
+            totalRounds={level.totalRounds}
+            wrongAnswerCount={wrongAnswerCount}
             chooseLevelHref={chooseLevelHref}
-            nextLevelHref={nextLevelHref}
+            nextLevelHref={earnedStars >= 2 ? nextLevelHref : undefined}
             onReplay={handleReplay}
           />
         ) : null}

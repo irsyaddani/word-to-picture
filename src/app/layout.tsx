@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
+
+import { BackgroundMusic } from "@/components/audio/background-music";
+
 import "./globals.css";
 
 const nunito = Nunito({
@@ -21,8 +24,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${nunito.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="id" className={`${nunito.variable} h-full antialiased`} suppressHydrationWarning>
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <BackgroundMusic />
+        {children}
+      </body>
     </html>
   );
 }

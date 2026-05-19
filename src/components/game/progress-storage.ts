@@ -32,7 +32,7 @@ export function resetGameProgress() {
 }
 
 export function calculateStars(wrongAnswerCount: number): number {
-  if (wrongAnswerCount <= 1) {
+  if (wrongAnswerCount <= 2) {
     return 3;
   }
 

@@ -36,8 +36,8 @@ export const CardLevel: React.FC<CardLevelProps> = ({
             onClick={active && !href ? onClick : undefined}
             aria-disabled={active ? undefined : true}
             className={`
-                relative flex flex-col items-center gap-3 p-4 pb- rounded-[36px]
-                transition-all duration-200 w-fit select-none
+                relative flex w-63 flex-col items-center gap-3 rounded-[36px] p-4
+                transition-all duration-200 select-none
                 ${active
                     ? `bg-parchment-50 ${isInteractive ? "cursor-pointer active:scale-95" : "cursor-default"} shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_1px_var(--color-parchment-base)]`
                     : "bg-[#FAFAFA] cursor-not-allowed shadow-[0px_2px_12px_rgba(15,15,15,0.1),inset_0px_-6px_0px_1px_rgba(225,228,235,1)] opacity-90"
@@ -71,7 +71,7 @@ export const CardLevel: React.FC<CardLevelProps> = ({
                         ))}
                     </div>
                 ) : (
-                    <p className="text-b2-extrabold text-text-sub px-2">
+                    <p className="min-h-12.5 px-2 text-b2-extrabold leading-snug text-text-sub whitespace-normal wrap-break-word">
                         {unlockMessage}
                     </p>
                 )}

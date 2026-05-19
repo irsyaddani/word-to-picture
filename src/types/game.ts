@@ -1,6 +1,7 @@
 export type GameAnswerOption = {
   id: string;
   label: string;
+  meaning?: string;
 };
 
 export type GameLevelRound = {

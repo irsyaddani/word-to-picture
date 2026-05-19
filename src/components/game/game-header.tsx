@@ -5,6 +5,7 @@ import { ClockIcon, PauseIcon } from "@/components/game/game-icons";
 type GameHeaderProps = {
   title: string;
   timeLeft: string;
+  timeRemaining: number;
   progressValue: number;
   totalRounds: number;
   pauseDisabled: boolean;
@@ -14,11 +15,14 @@ type GameHeaderProps = {
 export function GameHeader({
   title,
   timeLeft,
+  timeRemaining,
   progressValue,
   totalRounds,
   pauseDisabled,
   onPause,
 }: GameHeaderProps) {
+  const isTimerUrgent = timeRemaining <= 10;
+
   return (
     <header className="grid min-h-25 grid-cols-[auto_1fr_auto] items-center gap-4 bg-white/20 px-5 py-4 sm:px-6">
       <div className="flex items-center gap-3">
@@ -51,7 +55,7 @@ export function GameHeader({
         </div>
       </div>
 
-      <div className="flex items-center justify-end gap-2 text-state-feature-darker">
+      <div className={`flex items-center justify-end gap-2 ${isTimerUrgent ? "text-state-error-base" : "text-state-feature-darker"}`}>
         <ClockIcon />
         <p className="text-h5-extrabold sm:text-h4-regular">
           {timeLeft}

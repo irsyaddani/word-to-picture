@@ -34,9 +34,9 @@ export function DraggableAnswerCard({
       style={style}
       {...listeners}
       {...attributes}
-      className={`touch-none select-none ${hintClass} ${disabled ? "pointer-events-none opacity-60" : isDragging ? "opacity-40" : ""}`}
+      className={`shrink-0 touch-none select-none ${hintClass} ${disabled ? "pointer-events-none opacity-60" : isDragging ? "opacity-40" : ""}`}
     >
-      <AnswerCard state="default" disabled={disabled}>
+      <AnswerCard state="default" disabled={disabled} className="min-w-0 px-3 sm:px-4">
         {answer.label}
       </AnswerCard>
     </div>
