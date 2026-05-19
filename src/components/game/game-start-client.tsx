@@ -178,6 +178,17 @@ export function GameStartClient({
   }, [chooseLevelHref, gameId, level.level, router]);
 
   useEffect(() => {
+    const nextRound = rounds[currentRoundIndex + 1];
+
+    if (!nextRound?.promptImageSrc) {
+      return;
+    }
+
+    const image = new window.Image();
+    image.src = nextRound.promptImageSrc;
+  }, [currentRoundIndex, rounds]);
+
+  useEffect(() => {
     if (notification === "error") {
       const timer = window.setTimeout(() => {
         setNotification(null);

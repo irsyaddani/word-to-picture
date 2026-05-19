@@ -46,7 +46,8 @@ export const ImageContainer: React.FC<ImageContainerProps> = ({
                         alt={alt}
                         fill
                         className="object-contain"
-                        priority
+                        sizes="(max-width: 640px) calc(100vw - 40px), 480px"
+                        unoptimized
                     />
                 </div>
             ) : (
